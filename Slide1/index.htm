@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<title>3D Model</title>
+<script type="text/javascript" src="iv3d.js"></script>
+<link rel="stylesheet" type="text/css" href="ivstyles.css" />
+</head>
+
+<body onload='view3d=iv.initViewer3d("tree.json",null,null,1.0);view3d.menuOpen=false;view3d.cfgSelZOffset=false;view3d.clrSelection[5]=false?0.5:1;'    >
+
+
+<div>
+    <canvas id="ivwindow3d" style="border: none;touch-action: none;" width="640" height="480"></canvas>
+
+<div class="panel" id="panel" style="display:hidden">
+
+<div id="content" class="content" >
+<div class="tree-view" id="tree"></div>
+<hr/>
+<h1>Views</h1>
+<ul id="views">
+</ul>
+</div>
+
+
+<div id="buttons" class="buttons">
+<span onclick="iv.setRMode(this);" id="view3d-rm-solid" class='passive'>Solid</span>
+<span onclick="iv.setRMode(this);" id="view3d-rm-wire" class='passive'>Wireframe</span>
+<span onclick="iv.setRMode(this);" id="view3d-rm-illustration" class='passive'>Illustration</span>
+</div>
+
+</div>
+<div class="main" onclick="iv.toggleMenu();" style="display:hidden" id="panel.main">
+<div class="text" id="main.button">&#9776;</div>
+<div class="text" id="main.text">3D Model</div>
+</div>
+
+
+</div>
+
+
+
+</body>
+
+</html>
