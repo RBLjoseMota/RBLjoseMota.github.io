@@ -60,7 +60,7 @@
 					var redPhongMaterial = new THREE.MeshPhongMaterial({color: 0xCC0000});
 				
 					//Load a model and store it in the variable XXX
-					jsonLoader.load( "Model.json", function( geometry ) { 
+					jsonLoader.load( "./Model.json", function( geometry ) { 
 			        var hemostat = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial() );
 					hemostat.materials=redPhongMaterial;
 
