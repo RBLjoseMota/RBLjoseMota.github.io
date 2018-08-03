@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<HTML>
+
+	<HEAD>
+		<META charset="utf-8">
+		<META name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/styles.css">
+		
+		
+		<link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+		
+		
+		<script src="js/THREEJS/three.min.js"></script>
+		<script src="js/THREEJS/Detector.js"></script>
+		<script src="js/THREEJS/OrbitControls.js"></script>
+		<script src="js/THREEJS/OBJLoader.js"></script>
+		<script src="js/THREEJS/MTLLoader.js"></script>
+		<script src="LoadModel.js"></script>
+		<script src="LoadLines.js"></script>
+		 <!-- <style> -->
+			 <!-- body { -->
+				 <!-- overflow: hidden;  -->
+				 <!-- margin: 0;  -->
+				 <!-- padding: 0;  -->
+				 <!-- background: hsl(0, 0%, 10%);  -->
+			 <!-- }  -->
+		<!-- </style>  -->
+	
+	</HEAD>
+	
+	
+	<BODY>
+		<div id="container"></div>
+		<script>
+		
+		
+			//Setup:
+			
+			if (!Detector.webgl)
+			{
+				Detector.addGetWebGLMessage();
+			}
+			
+			// Set the scene size.
+			const WIDTH = window.innerWidth;
+			const HEIGHT = window.innerHeight;
+
+			// Set some camera attributes.
+			const VIEW_ANGLE = 45;
+			const ASPECT = WIDTH / HEIGHT;
+			const NEAR = 0.1;
+			const FAR = 10000;
+
+			// Get the DOM element to attach to
+			const container =
+				document.querySelector('#container');
+
+			// Create a WebGL renderer, camera
+			// and a scene
+			const renderer = new THREE.WebGLRenderer();
+			const camera =
+				new THREE.PerspectiveCamera(
+					VIEW_ANGLE,
+					ASPECT,
+					NEAR,
+					FAR
+				);
+				
+			////////////////////////////////
+			// Set initial camera position//
+			////////////////////////////////
+			//on chrome navigate to the desired view; ctrl+shift+i > execute on console: camera.getWorld.Quaternion() and camera.getWorldPosition()to get both values
+			////define those values here////
+
+			camera.position.x = -228.522;
+			camera.position.y = 1439.500;
+			camera.position.z = 44.601;
+			
+			camera.Quaternion = new THREE.Quaternion(-0.107129,0.6989448,0.698944,-0.1071291);
+			
+			//////End Camera Config/////////
+			////////////////////////////////
+	
+
+
+			const scene = new THREE.Scene();
+
+			// Add the camera to the scene.
+			scene.add(camera);
+			
+			// Add ambient lighting
+			const ambient = 0.5;
+			scene.add(new THREE.AmbientLight(0xffffff, ambient));
+
+			// Start the renderer.
+			renderer.setSize(WIDTH, HEIGHT);
+			renderer.setClearColor( 0xffffff, 1);
+
+			// Attach the renderer-supplied
+			// DOM element.
+			container.appendChild(renderer.domElement);
+
+			// Orbit controls:
+			const controls = new THREE.OrbitControls(camera, renderer.domElement);
+			controls.enableDamping = true;
+			controls.dampingFactor = 0.25;
+			controls.enableZoom = true;
+
+
+			// Adding Custom geometry:
+			//Meshes:
+			
+			<!-- //var geom0 = new THREE.Geometry();
+			
+			//geom.vertices.push(new THREE.Vector3(0,0,0));
+			//geom.vertices.push(new THREE.Vector3(0,100,0));
+			//geom.vertices.push(new THREE.Vector3(100,0,0));
+			//geom.vertices.push(new THREE.Vector3(100,100,0));
+			
+			//mirror geometry to look the same in rhino and browser
+			
+			//geom0.applyMatrix(new THREE.Matrix4().makeScale(-1,1,1));
+			
+			// Set vertex colors:
+			//geom.faces[0].vertexColors[0] = new THREE.Color("rgb(255,0,0)");
+			//geom.faces[0].vertexColors[1] = new THREE.Color("rgb(0,255,0)");
+			//geom.faces[0].vertexColors[2] = new THREE.Color("rgb(0,0,255)");
+			//geom.faces[0].vertexColors[3] = new THREE.Color("rgb(0,0,255)");
+			//geom0.computeFaceNormals();
+			
+			//create material 
+			//var material = new THREE.MeshLambertMaterial( {  wireframe: false, flatShading: true, vertexColors:  THREE.VertexColors , side : THREE.DoubleSide} );
+			//create object and add to scene
+			//var mObj = new THREE.Mesh(geom0, material);
+			//scene.add(mObj); -->
+
+			//Curves:
+			<!-- 
+			//var curves = new THREE.Geometry();
+			//curves.vertices.push(new THREE.Vector3(-10,0,0));
+			//curves.vertices.push(new THREE.Vector3(0,10,0));
+			//Material
+			//var lineMat = new THREE.LineBasicMaterial( { color: 0x000000 } );
+			//create obj and add to scene
+			//var line = new THREE.Line(curves,lineMat);
+			//scene.add(line); -->
+			
+			
+			
+			//Create material to display vertex colors of meshes
+			var material = new THREE.MeshLambertMaterial( {  wireframe: false, flatShading: true, vertexColors:  THREE.VertexColors , side : THREE.DoubleSide} );
+			
+			// Load geometry from file and get geom[]array size (number of different meshes)
+			
+			var geom = []; // Where meshes are stored
+			var mObj =[]; // Where meshes are stored as WebGL objects ready to be displayed
+			
+			var n_obj = LoadGeom();
+			
+			// Load Lines and Curves from file
+			var lineMat = new THREE.LineBasicMaterial( { color: 0x000000 } );
+			LoadLine();
+			
+			function show_all(){
+				for ( i=0;i<n_obj;i++){
+					scene.add(mObj[i]);
+				}
+			}	
+			show_all();
+			// create another ambient light
+			const AmbiLight = new THREE.AmbientLight(0xffffff);
+			AmbiLight.intensity = 0.25;
+
+			// add to the scene
+			scene.add(AmbiLight);
+			
+			
+			// Draw!
+			renderer.render(scene, camera);
+		
+		
+			function update () {
+			  // Draw!
+			  renderer.render(scene, camera);
+			  controls.update();
+			  // Schedule the next frame.
+			  requestAnimationFrame(update);
+			}
+			
+			//switch between multiple layers
+			var i=1; // controller var
+			
+			function switch_layer(){
+				if(i==0){
+					scene.remove(mObj[1]);
+					scene.add(mObj[0]);
+					i=1;
+				}else{
+					scene.remove(mObj[0]);
+					scene.add(mObj[1]);
+					i=0;
+				}
+			}
+			
+			function isolate(i){
+				var input_size = i.length;
+				//remove all meshes
+				for (n=0;n<n_obj;n++){
+					scene.remove(mObj[n]);
+				}
+				//add only the selected
+				for(b=0;b<input_size;b++){
+					scene.add(mObj[i[b]]);
+				}
+			}
+			
+			// Schedule the first frame.
+			requestAnimationFrame(update);
+
+		</script>
+	<div id='menu'>
+	<!--<input type="button" value="Switch Target" onclick="switch_layer();">-->
+	<a class='dropdown-trigger btn' href='#' data-target='dropdown1'> Controls </a>
+
+	  <!-- Dropdown Structure -->
+	  <ul id='dropdown1' class='dropdown-content'>
+		<li><a onclick="show_all();">Show All</a></li>
+		<li class="divider" tabindex="-1"></li>
+		<li><a onclick="isolate([4]);">Isolate Building</a></li>
+		<li><a onclick="isolate([0,1,2,3]);">Isolate terrain</a></li>
+		<!--<li><a href="#!"><i class="material-icons">icon</i>Placeholder</a></li>-->
+		<li><a>Placeholder</a></li>
+	  </ul>
+	
+	
+	</div>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				var elems = document.querySelectorAll('.dropdown-trigger');
+				var instances = M.Dropdown.init(elems);
+			});
+  </script>
+	</BODY>
+
+</HTML>
