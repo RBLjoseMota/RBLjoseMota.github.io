@@ -4,12 +4,17 @@
 	<HEAD>
 		<META charset="utf-8">
 		<META name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/styles.css">
 		
-		<script src="three.min.js"></script>
-		<script src="Detector.js"></script>
-		<script src="OrbitControls.js"></script>
-		<script src="OBJLoader.js"></script>
-		<script src="MTLLoader.js"></script>
+		
+		<link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+		
+		
+		<script src="js/THREEJS/three.min.js"></script>
+		<script src="js/THREEJS/Detector.js"></script>
+		<script src="js/THREEJS/OrbitControls.js"></script>
+		<script src="js/THREEJS/OBJLoader.js"></script>
+		<script src="js/THREEJS/MTLLoader.js"></script>
 		<script src="LoadModel.js"></script>
 		<script src="LoadLines.js"></script>
 		 <!-- <style> -->
@@ -60,18 +65,21 @@
 					NEAR,
 					FAR
 				);
+				
 			////////////////////////////////
 			// Set initial camera position//
 			////////////////////////////////
 			//on chrome navigate to the desired view; ctrl+shift+i > execute on console: camera.getWorld.Quaternion() and camera.getWorldPosition()to get both values
-			//define those values here
+			////define those values here////
+
 			camera.position.x = -228.522;
 			camera.position.y = 1439.500;
 			camera.position.z = 44.601;
 			
 			camera.Quaternion = new THREE.Quaternion(-0.107129,0.6989448,0.698944,-0.1071291);
 			
-
+			//////End Camera Config/////////
+			////////////////////////////////
 	
 
 
@@ -97,96 +105,79 @@
 			controls.enableDamping = true;
 			controls.dampingFactor = 0.25;
 			controls.enableZoom = true;
-			
-			// Set up the sphere vars
-			const RADIUS = 50;
-			const SEGMENTS = 16;
-			const RINGS = 16;
 
-						
-			// create the sphere's material
-			const sphereMaterial =
-			  new THREE.MeshLambertMaterial(
-				{
-				  color: 0x0000CC,
-				  side: THREE.DoubleSide
-				});
-			
-			// Create a new mesh with
-			// sphere geometry - we will cover
-			// the sphereMaterial next!
-			const sphere = new THREE.Mesh(
 
-			  new THREE.SphereGeometry(
-				RADIUS,
-				SEGMENTS,
-				RINGS),
-
-			  sphereMaterial);
-
-			// Move the Sphere back in Z so we
-			// can see it.
-			//sphere.position.z = -300;
-
-			// Finally, add the sphere to the scene.
-			//scene.add(sphere);
-
-			// Custom geometry:
-			var geom = new THREE.Geometry();
-			LoadGeom();
+			// Adding Custom geometry:
+			//Meshes:
 			
-			var lineMat = new THREE.LineBasicMaterial( { color: 0x000000 } );
-			LoadLine();
-			//var curves = new THREE.Geometry();
-			
-			//curves.vertices.push(new THREE.Vector3(-10,0,0));
-			//curves.vertices.push(new THREE.Vector3(0,10,0));
-			//curves.vertices.push(new THREE.Vector3(10,0,0));
-			
-			//var line = new THREE.Line(curves,lineMat);
-			//scene.add(line);
-			
+			<!-- //var geom0 = new THREE.Geometry();
 			
 			//geom.vertices.push(new THREE.Vector3(0,0,0));
 			//geom.vertices.push(new THREE.Vector3(0,100,0));
 			//geom.vertices.push(new THREE.Vector3(100,0,0));
 			//geom.vertices.push(new THREE.Vector3(100,100,0));
 			
-			//Needed to mirror the 3dmodel (The mesh needs this operation match the lines)
-			geom.applyMatrix(new THREE.Matrix4().makeScale(-1,1,1));
-
-
-			// Set vertex colours:
+			//mirror geometry to look the same in rhino and browser
+			
+			//geom0.applyMatrix(new THREE.Matrix4().makeScale(-1,1,1));
+			
+			// Set vertex colors:
 			//geom.faces[0].vertexColors[0] = new THREE.Color("rgb(255,0,0)");
 			//geom.faces[0].vertexColors[1] = new THREE.Color("rgb(0,255,0)");
 			//geom.faces[0].vertexColors[2] = new THREE.Color("rgb(0,0,255)");
 			//geom.faces[0].vertexColors[3] = new THREE.Color("rgb(0,0,255)");
+			//geom0.computeFaceNormals();
+			
+			//create material 
+			//var material = new THREE.MeshLambertMaterial( {  wireframe: false, flatShading: true, vertexColors:  THREE.VertexColors , side : THREE.DoubleSide} );
+			//create object and add to scene
+			//var mObj = new THREE.Mesh(geom0, material);
+			//scene.add(mObj); -->
+
+			//Curves:
+			<!-- 
+			//var curves = new THREE.Geometry();
+			//curves.vertices.push(new THREE.Vector3(-10,0,0));
+			//curves.vertices.push(new THREE.Vector3(0,10,0));
+			//Material
+			//var lineMat = new THREE.LineBasicMaterial( { color: 0x000000 } );
+			//create obj and add to scene
+			//var line = new THREE.Line(curves,lineMat);
+			//scene.add(line); -->
 			
 			
-
-			geom.computeFaceNormals();
-
+			
+			//Create material to display vertex colors of meshes
 			var material = new THREE.MeshLambertMaterial( {  wireframe: false, flatShading: true, vertexColors:  THREE.VertexColors , side : THREE.DoubleSide} );
-
-			var mObj = new THREE.Mesh(geom, material);
-			scene.add(mObj);
-
-			// create a point light
-			const pointLight =
-			  new THREE.AmbientLight(0xffffff);
-			  
-			pointLight.intensity = 0.25;
-
-			// set its position
-			//pointLight.position.x = 10;
-			//pointLight.position.y = 50;
-			//pointLight.position.z = 130;
+			
+			// Load geometry from file and get geom[]array size (number of different meshes)
+			
+			var geom = []; // Where meshes are stored
+			var mObj =[]; // Where meshes are stored as WebGL objects ready to be displayed
+			
+			var n_obj = LoadGeom();
+			
+			// Load Lines and Curves from file
+			var lineMat = new THREE.LineBasicMaterial( { color: 0x000000 } );
+			LoadLine();
+			
+			function show_all(){
+				for ( i=0;i<n_obj;i++){
+					scene.add(mObj[i]);
+				}
+			}	
+			show_all();
+			// create another ambient light
+			const AmbiLight = new THREE.AmbientLight(0xffffff);
+			AmbiLight.intensity = 0.25;
 
 			// add to the scene
-			scene.add(pointLight);
+			scene.add(AmbiLight);
+			
 			
 			// Draw!
 			renderer.render(scene, camera);
+		
 		
 			function update () {
 			  // Draw!
@@ -195,13 +186,61 @@
 			  // Schedule the next frame.
 			  requestAnimationFrame(update);
 			}
-
+			
+			//switch between multiple layers
+			var i=1; // controller var
+			
+			function switch_layer(){
+				if(i==0){
+					scene.remove(mObj[1]);
+					scene.add(mObj[0]);
+					i=1;
+				}else{
+					scene.remove(mObj[0]);
+					scene.add(mObj[1]);
+					i=0;
+				}
+			}
+			
+			function isolate(i){
+				var input_size = i.length;
+				//remove all meshes
+				for (n=0;n<n_obj;n++){
+					scene.remove(mObj[n]);
+				}
+				//add only the selected
+				for(b=0;b<input_size;b++){
+					scene.add(mObj[i[b]]);
+				}
+			}
+			
 			// Schedule the first frame.
 			requestAnimationFrame(update);
-		
+
 		</script>
+	<div id='menu'>
+	<!--<input type="button" value="Switch Target" onclick="switch_layer();">-->
+	<a class='dropdown-trigger btn' href='#' data-target='dropdown1'> Controls </a>
+
+	  <!-- Dropdown Structure -->
+	  <ul id='dropdown1' class='dropdown-content'>
+		<li><a onclick="show_all();">Show All</a></li>
+		<li class="divider" tabindex="-1"></li>
+		<li><a onclick="isolate([1]);">Isolate Building</a></li>
+		<li><a onclick="isolate([0]);">Isolate terrain</a></li>
+		<!--<li><a href="#!"><i class="material-icons">icon</i>Placeholder</a></li>-->
+		<li><a>Placeholder</a></li>
+	  </ul>
 	
 	
+	</div>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				var elems = document.querySelectorAll('.dropdown-trigger');
+				var instances = M.Dropdown.init(elems);
+			});
+  </script>
 	</BODY>
 
 </HTML>
