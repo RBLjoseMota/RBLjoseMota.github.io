@@ -1,0 +1,20 @@
+#menu {
+    position: absolute; /* Sit on top of the page content */
+     /* Hidden by default */
+    top: 2%; 
+    left: 1%;
+    right: 0;
+    bottom: 0;
+     /* Black background with opacity */
+    z-index: 0; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+	width:fit-content;
+	height:fit-content;
+	box-shadow: 1px 1px 10px 2px #909090;
+}
+#dropdown1 {
+	box-shadow:0px 0px 14px 4px #909090;
+}
+body {
+		overflow: hidden; 
+}
