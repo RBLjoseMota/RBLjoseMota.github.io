@@ -30,7 +30,7 @@
 	</HEAD>
 	
 	
-	<BODY>
+	<BODY onresize="WindowResized();">
 		<div id="container"></div>
 		<script>
 		
@@ -48,7 +48,7 @@
 
 			// Set some camera attributes.
 			const VIEW_ANGLE = 45;
-			const ASPECT = WIDTH / HEIGHT;
+			var ASPECT = WIDTH / HEIGHT;
 			const NEAR = 0.1;
 			const FAR = 10000;
 
@@ -66,7 +66,6 @@
 					NEAR,
 					FAR
 				);
-				
 			////////////////////////////////
 			// Set initial camera position//
 			////////////////////////////////
@@ -213,6 +212,12 @@
 				for(b=0;b<input_size;b++){
 					scene.add(mObj[i[b]]);
 				}
+			}
+			function WindowResized(){
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+					
+				renderer.setSize(window.innerWidth,window.innerHeight);
 			}
 			
 			// Schedule the first frame.
