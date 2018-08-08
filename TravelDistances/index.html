@@ -29,7 +29,7 @@
 	</HEAD>
 	
 	
-	<BODY>
+	<BODY onresize="WindowResized();">
 		<div id="container"></div>
 		<script>
 		
@@ -212,6 +212,12 @@
 				for(b=0;b<input_size;b++){
 					scene.add(mObj[i[b]]);
 				}
+			}
+			function WindowResized(){
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+					
+				renderer.setSize(window.innerWidth,window.innerHeight);
 			}
 			
 			// Schedule the first frame.
