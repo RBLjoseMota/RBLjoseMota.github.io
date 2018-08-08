@@ -8,8 +8,7 @@
      /* Black background with opacity */
     z-index: 0; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
-	width:fit-content;
-	height:fit-content;
+	display: table;
 	box-shadow: 1px 1px 10px 2px #909090;
 }
 #dropdown1 {
