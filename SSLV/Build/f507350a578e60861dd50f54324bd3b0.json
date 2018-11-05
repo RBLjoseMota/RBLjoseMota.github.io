@@ -1,0 +1,14 @@
+{
+"companyName": "DefaultCompany",
+"productName": "SiteSolve",
+"dataUrl": "ddf430227fe8220125a945c7df1851a9.unityweb",
+"asmCodeUrl": "2fb1e3cf6730236e6baaaf583e4a5af9.unityweb",
+"asmMemoryUrl": "d3537086da1ff9d17ca94a12facd8228.unityweb",
+"asmFrameworkUrl": "1b18cc6815394007999af64b85239e0f.unityweb",
+"TOTAL_MEMORY": 536870912,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Light",
+"backgroundColor": "#828080",
+"cacheControl": {"default": "must-revalidate"}
+}
