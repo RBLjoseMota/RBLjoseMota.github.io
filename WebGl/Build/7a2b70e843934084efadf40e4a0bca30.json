@@ -1,0 +1,13 @@
+{
+"companyName": "Ramboll",
+"productName": "SiteSolve",
+"dataUrl": "821a03d504c8b3f80f51e13f07146be7.unityweb",
+"wasmCodeUrl": "3a25e87a3cf1c1c7ceba24393772a1e5.unityweb",
+"wasmFrameworkUrl": "b7ed98caf1fefe11d522c4a0858ca0c5.unityweb",
+"TOTAL_MEMORY": 536870912,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Light",
+"backgroundColor": "#828080",
+"cacheControl": {"default": "must-revalidate"}
+}
